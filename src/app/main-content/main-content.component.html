@@ -1,0 +1,33 @@
+<div class="control row" (mousemove)="mouseMove($event)">
+    <div class="btn btn-primary" (click)="onClick($event,1)">Boolean</div>
+    <div class="btn btn-primary" (click)="onClick($event,3)">TextBox</div>
+    <div class="btn btn-primary" (click)="onClick($event,2)">TextField</div>
+</div>
+
+<button style="margin-left:100px" class="btn btn-danger" (click)="save()">Save</button>
+
+<div class="drop-zone" (mousedown)="mouseDown($event)" (mouseup)="mouseup()" (mousemove)="mouseMove($event)" #myBounds>
+    <div *ngFor="let control of controls">
+        <div class="checkbox" *ngIf="control.markerType==='checkbox'" [id]="control.id"
+            [ngStyle]="{'left.px':control.x,'top.px':control.y,'height.px':control.h,'width.px':control.w,'position':control.position}"
+            ngDraggable ngResizable (endOffset)="onMoveEnd($event,element)" (rzStop)="onResizeStop($event,element)"
+            [bounds]="myBounds" [inBounds]="true" #element>
+        </div>
+        <div *ngIf="control.markerType==='textfield'" [id]="control.id"
+            [ngStyle]="{'left.px':control.x,'top.px':control.y,'height.px':control.h,'width.px':control.w,'position':control.position}"
+            ngDraggable ngResizable (endOffset)="onMoveEnd($event,element)" (rzStop)="onResizeStop($event,element)"
+            [bounds]="myBounds" [inBounds]="true" #element>
+            <input type="text" style="height: 100%; width: 100%;">
+        </div>
+        <div *ngIf="control.markerType==='textbox'" [id]="control.id"
+            [ngStyle]="{'left.px':control.x,'top.px':control.y,'height.px':control.h,'width.px':control.w,'position':control.position}"
+            ngDraggable ngResizable (endOffset)="onMoveEnd($event,element)" (rzStop)="onResizeStop($event,element)"
+            [bounds]="myBounds" [inBounds]="true" #element (dblclick)="dblclick()">
+            <input type="text" *ngFor="let box of control.boxCollection"
+                [ngStyle]="{'width.px':box.w,'height.px':box.h}">
+        </div>
+    </div>
+
+</div>
+
+<span class="coupontooltip" [ngStyle]="ttStyle">Drop {{type}}</span>
